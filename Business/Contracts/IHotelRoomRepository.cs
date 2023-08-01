@@ -13,7 +13,7 @@ namespace Business.Contracts
         public Task<HotelRoomDTO> Update(int roomId, HotelRoomDTO hotelRoomDTO);
         public Task<HotelRoomDTO> GetById(int roomId);
         public Task<IEnumerable<HotelRoomDTO>> GetAll();
-        public Task<HotelRoomDTO> IsRoomUnique(string name);
+        public Task<HotelRoomDTO> IsRoomUnique(string name, int roomId=0);
         public Task<int> Delete(int roomId);
     }
 }

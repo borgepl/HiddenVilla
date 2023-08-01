@@ -31,13 +31,23 @@ namespace Business.Repository
             return _mapper.Map<HotelRoomDTO>(addedHotelRoom.Entity);
         }
 
-        public async Task<HotelRoomDTO> IsRoomUnique(string name)
+        public async Task<HotelRoomDTO> IsRoomUnique(string name, int roomId = 0)
         {
             try
             {
-                HotelRoom hotelRoom = await _db.HotelRooms.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+                if (roomId == 0)
+                {
+                    HotelRoom hotelRoom = await _db.HotelRooms.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
 
-                return _mapper.Map<HotelRoomDTO>(hotelRoom);
+                    return _mapper.Map<HotelRoomDTO>(hotelRoom);
+                }
+                else
+                {
+                    HotelRoom hotelRoom = await _db.HotelRooms.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower()
+                                                && x.Id != roomId);
+
+                    return _mapper.Map<HotelRoomDTO>(hotelRoom);
+                }
             }
             catch (Exception)
             {
