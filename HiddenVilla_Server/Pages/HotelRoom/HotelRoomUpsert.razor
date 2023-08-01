@@ -1,0 +1,65 @@
+﻿@page "/hotel-room/create"
+@using Models.Dto
+@using Business.Contracts
+
+@inject IHotelRoomRepository HotelRoomRepo
+@inject NavigationManager NavigationManager
+
+<div class="row mt-2 mb-5">
+    <h3 class="card-title text-info mb-3 ms-3">@Title Hotel Room</h3>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <EditForm Model="HotelRoomModel" OnValidSubmit="HandleHotelRoomUpsert">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="HotelRoomModel.Name" class="form-control" id="name"></InputText>
+                            <label for="name">Name</label>
+                            <ValidationMessage For="()=>HotelRoomModel.Name"></ValidationMessage>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputNumber @bind-Value="HotelRoomModel.Occupancy" class="form-control" id="occupancy"></InputNumber>
+                            <label for="occupancy">Occupancy</label>
+                            <ValidationMessage For="()=>HotelRoomModel.Occupancy"></ValidationMessage>
+                         </div>
+                        <div class="form-floating mb-3">
+                            <InputNumber @bind-Value="HotelRoomModel.RegularRate" class="form-control" id="rate"></InputNumber>
+                            <label for="rate">Rate</label>
+                            <ValidationMessage For="()=>HotelRoomModel.RegularRate"></ValidationMessage>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="HotelRoomModel.SqFt" class="form-control" id="sqft"></InputText>
+                            <label for="sqft">Sq ft.</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputTextArea @bind-Value="HotelRoomModel.Details" class="form-control" id="details"></InputTextArea>
+                            <label for="details">Details</label>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-primary">@Title Room</button>
+                            <NavLink href="hotel-room" class="btn btn-secondary">Back To List</NavLink>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+</div>
+
+@code {
+
+    private HotelRoomDTO HotelRoomModel { get; set; } = new HotelRoomDTO();
+    private string Title { get; set; } = "Create";
+
+    private async Task HandleHotelRoomUpsert()
+    {
+        var roomDetailsByName = await HotelRoomRepo.IsRoomUnique(HotelRoomModel.Name);
+        if (roomDetailsByName != null)
+        {
+            // there is duplicate room show error
+            return;
+        }
+        var createdResult = await HotelRoomRepo.Create(HotelRoomModel);
+        NavigationManager.NavigateTo("hotel-room");
+    }
+}
