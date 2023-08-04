@@ -20,8 +20,11 @@ namespace HiddenVilla_Server.Extensions
             });
 
             services.AddAutoMapper(typeof(MappingProfile));
+
             services.AddScoped<IHotelRoomRepository, HotelRoomRepository>();
             services.AddScoped<IHotelImagesRepository, HotelImagesRepository>();
+            services.AddScoped<IAmenityRepository, AmenityRepository>();
+
             services.AddScoped<IFileUpload, FileUpload>();
 
             return services;
