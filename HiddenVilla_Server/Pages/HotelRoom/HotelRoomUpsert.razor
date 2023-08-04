@@ -39,9 +39,41 @@
                             <InputText @bind-Value="HotelRoomModel.SqFt" class="form-control" id="sqft"></InputText>
                             <label for="sqft">Sq ft.</label>
                         </div>
-                        <div class="form-floating mb-3">
-                            <InputTextArea @bind-Value="HotelRoomModel.Details" class="form-control" id="details"></InputTextArea>
-                            <label for="details">Details</label>
+                        <div class="mb-3" style="height:250px;">
+@*                            <InputTextArea @bind-Value="HotelRoomModel.Details" class="form-control" id="details"></InputTextArea>
+*@                            <label for="details">Details</label>
+                        <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Please enter room details.">
+                            <ToolbarContent>
+                                <select class="ql-header">
+                                    <option selected=""></option>
+                                    <option value="1"></option>
+                                    <option value="2"></option>
+                                    <option value="3"></option>
+                                    <option value="4"></option>
+                                    <option value="5"></option>
+                                </select>
+                                <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    <button class="ql-strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <select class="ql-color"></select>
+                                    <select class="ql-background"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                </span>
+                            </ToolbarContent>
+                            <EditorContent>
+                            
+                            </EditorContent>
+                        </BlazoredTextEditor>
                         </div>
                         <div class="form-floating mb-3" style="padding-top:70px;">
                             <InputFile OnChange="HandleImageUpload" multiple></InputFile>
@@ -90,6 +122,7 @@
     private string Title { get; set; } = "Create";
     private HotelRoomImageDTO RoomImage { get; set; } = new HotelRoomImageDTO();
     private List<string> DeletedImageNames { get; set; } = new List<string>();
+    public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
     private bool IsImageUploadProcessStarted { get; set; } = false;
 
@@ -113,6 +146,33 @@
         }
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // SetHTML();
+        if (!firstRender) return;
+
+        bool loading = true;
+        while (loading)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(HotelRoomModel.Details))
+                {
+                    await this.QuillHtml.LoadHTMLContent(HotelRoomModel.Details);
+                }
+                loading = false;
+            }
+            catch
+            {
+
+                await Task.Delay(10);
+                loading = true;
+            }
+        }
+        
+        return;
+    }
+
     private async Task HandleHotelRoomUpsert()
     {
         try
@@ -128,6 +188,8 @@
             if (HotelRoomModel.Id != 0 && Title == "Update")
             {
                 // update
+                HotelRoomModel.Details = await this.QuillHtml.GetHTML();
+
                 var updateRoomResult = await HotelRoomRepo.Update(HotelRoomModel.Id, HotelRoomModel);
                 if ((HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Any()) || (DeletedImageNames != null && DeletedImageNames.Any()))
                 {
@@ -150,6 +212,8 @@
             else
             {
                 // create
+                HotelRoomModel.Details = await this.QuillHtml.GetHTML();
+
                 var createdResult = await HotelRoomRepo.Create(HotelRoomModel);
                 await AddHotelRommImage(createdResult);
 
@@ -166,6 +230,15 @@
 
         NavigationManager.NavigateTo("hotel-room");
     }
+
+    //public void SetHTML()
+    //{
+    //    if (!string.IsNullOrEmpty(HotelRoomModel.Details))
+    //    {
+    //        this.QuillHtml.LoadHTMLContent(HotelRoomModel.Details);
+    //    }
+    //    StateHasChanged();
+    //}
 
     private async Task HandleImageUpload(InputFileChangeEventArgs e)
     {
