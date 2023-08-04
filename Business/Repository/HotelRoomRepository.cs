@@ -60,7 +60,7 @@ namespace Business.Repository
         {
             try
             {
-                IEnumerable<HotelRoom> hotelRooms =  await _db.HotelRooms.ToListAsync();
+                IEnumerable<HotelRoom> hotelRooms =  await _db.HotelRooms.Include(x=>x.HotelRoomImages).ToListAsync();
                 IEnumerable<HotelRoomDTO> hotelRoomDTOs = _mapper.Map<IEnumerable<HotelRoomDTO>>(hotelRooms);
                 return hotelRoomDTOs;
             }
@@ -75,7 +75,7 @@ namespace Business.Repository
         {
             try
             {
-                HotelRoom hotelRoom = await _db.HotelRooms.FirstOrDefaultAsync(x => x.Id == roomId);
+                HotelRoom hotelRoom = await _db.HotelRooms.Include(x=>x.HotelRoomImages).FirstOrDefaultAsync(x => x.Id == roomId);
 
                 return _mapper.Map<HotelRoomDTO>(hotelRoom);
             }
@@ -118,6 +118,9 @@ namespace Business.Repository
             var roomDetails = await _db.HotelRooms.FindAsync(roomId);
             if (roomDetails != null)
             {
+                var allimages = await _db.HotelRoomImages.Where(x => x.RoomId == roomId).ToListAsync();
+
+                _db.HotelRoomImages.RemoveRange(allimages);
                 _db.HotelRooms.Remove(roomDetails);
                 return await _db.SaveChangesAsync();
             }

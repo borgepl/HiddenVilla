@@ -2,6 +2,8 @@
 using Business.Contracts;
 using Business.Repository;
 using DataAccess.Data;
+using HiddenVilla_Server.Services;
+using HiddenVilla_Server.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace HiddenVilla_Server.Extensions
@@ -19,6 +21,8 @@ namespace HiddenVilla_Server.Extensions
 
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddScoped<IHotelRoomRepository, HotelRoomRepository>();
+            services.AddScoped<IHotelImagesRepository, HotelImagesRepository>();
+            services.AddScoped<IFileUpload, FileUpload>();
 
             return services;
         }
