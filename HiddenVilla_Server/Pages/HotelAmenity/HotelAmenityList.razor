@@ -2,10 +2,13 @@
 @using Models.Dto
 @using Business.Repository
 @using Business.Contracts
+@using Common
 
 @inject IAmenityRepository AmenityRepository
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = SD.Role_Admin)]
 
 <div class="row mt-4">
     <div class="col-6">

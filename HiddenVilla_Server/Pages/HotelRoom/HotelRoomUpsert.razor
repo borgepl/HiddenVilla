@@ -124,10 +124,21 @@
     private List<string> DeletedImageNames { get; set; } = new List<string>();
     public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
     private bool IsImageUploadProcessStarted { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
+        var authenticationState = await AuthenticationState;
+
+        if (!authenticationState.User.IsInRole(Common.SD.Role_Admin))
+        {
+            var uri = new Uri(NavigationManager.Uri);
+            NavigationManager.NavigateTo($"/Identity/Account/Login?returnUrl={uri.LocalPath}");
+        }
+
         if (Id != null)
         {
             // We are updating

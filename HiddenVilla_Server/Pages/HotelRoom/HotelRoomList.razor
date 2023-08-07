@@ -2,11 +2,14 @@
 @using Models.Dto
 @using Business.Contracts
 @using HiddenVilla_Server.Services.Contracts
+@using Common
 
 @inject IHotelRoomRepository HotelRoomRepo
 @inject IFileUpload FileUpload
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = SD.Role_Admin)]
 
 <div class="row mt-4">
     <div class="col-8">

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DataAccess.Data;
+using HiddenVilla_Server.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,8 +41,19 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+SeedDatabase();
+
 app.MapRazorPages();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
+        dbInitializer.InitializeAsync();
+    }
+}

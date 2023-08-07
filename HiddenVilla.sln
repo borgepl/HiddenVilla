@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HiddenVilla_Server", "HiddenVilla_Server\HiddenVilla_Server.csproj", "{D74C23F5-5367-448B-A951-D8441257F4EA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AFE602C0-44FD-4B6C-8813-C3D0F851ACAF} = {AFE602C0-44FD-4B6C-8813-C3D0F851ACAF}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{5919FF9C-8019-4999-A4A4-2503F196EC73}"
 EndProject
@@ -12,6 +15,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{23184EA6-6B77-40E9-9562-6216E03267EC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{BC8E1D5A-76CB-4E2B-94EE-86C480439B16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiddenVilla_Api", "HiddenVilla_Api\HiddenVilla_Api.csproj", "{967C15B1-55A7-4F9A-81F2-917C3AD81992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +44,10 @@ Global
 		{BC8E1D5A-76CB-4E2B-94EE-86C480439B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC8E1D5A-76CB-4E2B-94EE-86C480439B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC8E1D5A-76CB-4E2B-94EE-86C480439B16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{967C15B1-55A7-4F9A-81F2-917C3AD81992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{967C15B1-55A7-4F9A-81F2-917C3AD81992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{967C15B1-55A7-4F9A-81F2-917C3AD81992}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{967C15B1-55A7-4F9A-81F2-917C3AD81992}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

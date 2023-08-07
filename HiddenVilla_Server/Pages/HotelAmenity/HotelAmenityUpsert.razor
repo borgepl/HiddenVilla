@@ -3,10 +3,13 @@
 @using Business.Repository
 @using Business.Contracts
 @using Models.Dto
+@using Common
 
 @inject IAmenityRepository AmenityRepository
 @inject NavigationManager NavigationManager
 @inject IJSRuntime jsRuntime
+
+@attribute [Authorize(Roles = SD.Role_Admin)]
 
 <div class="row mt-2 mb-5">
     <h3 class="card-title text-info mb-3 ml-3">@Title Hotel Amenity</h3>
@@ -118,7 +121,7 @@
             IsProcessingStart = false;
 
         }
-        catch (Exception e)
+        catch (Exception)
         {
             IsProcessingStart = false;
         }

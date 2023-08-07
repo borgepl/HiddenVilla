@@ -2,11 +2,9 @@
 using Business.Contracts;
 using Business.Repository;
 using DataAccess.Data;
-using HiddenVilla_Server.Services;
-using HiddenVilla_Server.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace HiddenVilla_Server.Extensions
+namespace HiddenVilla_Api.Extensions
 {
     public static class ApplicationServiceExtensions
     {
@@ -20,16 +18,15 @@ namespace HiddenVilla_Server.Extensions
             });
 
             services.AddAutoMapper(typeof(MappingProfile));
-            services.AddHttpContextAccessor();
+           
             services.AddScoped<IHotelRoomRepository, HotelRoomRepository>();
             services.AddScoped<IHotelImagesRepository, HotelImagesRepository>();
             services.AddScoped<IAmenityRepository, AmenityRepository>();
 
-            services.AddScoped<IDBInitializer, DBInitializer>();
-
-            services.AddScoped<IFileUpload, FileUpload>();
+            services.AddRouting(opt => opt.LowercaseUrls=true);
 
             return services;
         }
+
     }
 }
