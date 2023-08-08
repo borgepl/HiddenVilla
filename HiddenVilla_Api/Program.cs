@@ -1,29 +1,34 @@
 using HiddenVilla_Api.Extensions;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add our own services
 builder.Services.AddMyAppServices(builder.Configuration);
 builder.Services.AddMyIdentityServices(builder.Configuration);
+builder.Services.AddSwaggerDocumentation();
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = null)
+    .AddNewtonsoftJson(opt => {
+        opt.SerializerSettings.ContractResolver = new DefaultContractResolver();
+        opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerDocumentation();
 }
 
 app.UseHttpsRedirection();
 
+app.UseCors("CorsPolicyAllowAll");
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
