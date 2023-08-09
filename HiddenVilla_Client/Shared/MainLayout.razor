@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration
+
+<BlazoredToasts Position="ToastPosition.BottomRight"
+                ShowProgressBar="true"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                ErrorIcon="fas fa-bug"
+                SuccessIcon="fas fa-thumbs-up" />
+
+
+<NavMenu />
+<div class="page">
+    <main>
+        @Body
+    </main>
+</div>
+
+
