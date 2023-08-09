@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Blazored.Toast;
 using HiddenVilla_Client;
 using Microsoft.AspNetCore.Components.Web;
@@ -10,5 +11,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddBlazoredToast();
+builder.Services.AddBlazoredLocalStorage();
 
 await builder.Build().RunAsync();
