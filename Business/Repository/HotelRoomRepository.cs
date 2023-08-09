@@ -127,5 +127,35 @@ namespace Business.Repository
             return 0;
 
         }
+
+        public async Task<IEnumerable<HotelRoomDTO>> GetAll(string checkInDateStr, string checkOutDateStr)
+        {
+            try
+            {
+                IEnumerable<HotelRoom> hotelRooms = await _db.HotelRooms.Include(x => x.HotelRoomImages).ToListAsync();
+                IEnumerable<HotelRoomDTO> hotelRoomDTOs = _mapper.Map<IEnumerable<HotelRoomDTO>>(hotelRooms);
+                return hotelRoomDTOs;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+        }
+
+        public async Task<HotelRoomDTO> GetByIdAndDates(int roomId, string checkInDateStr, string checkOutDateStr)
+        {
+            try
+            {
+                HotelRoom hotelRoom = await _db.HotelRooms.Include(x => x.HotelRoomImages).FirstOrDefaultAsync(x => x.Id == roomId);
+
+                return _mapper.Map<HotelRoomDTO>(hotelRoom);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+        }
     }
 }
