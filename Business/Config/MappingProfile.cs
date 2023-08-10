@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.Data.Domain;
 using Models.Dto;
+using Models.Dto.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace Business.Config
             CreateMap<HotelRoomDTO, HotelRoom>().ReverseMap();
             CreateMap<HotelRoomImageDTO, HotelRoomImage>().ReverseMap();
             CreateMap<HotelAmenityDTO, HotelAmenity>().ReverseMap();
+
+            CreateMap<RoomOrderDetailsDTO, RoomOrderDetails>().ReverseMap();
         }
     }
 }

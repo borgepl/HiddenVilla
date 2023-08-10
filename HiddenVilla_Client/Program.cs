@@ -15,6 +15,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 
 
 builder.Services.AddScoped<IHotelRoomService, HotelRoomService>();
+builder.Services.AddScoped<IHotelAmenityService, HotelAmenityService>();
 
 builder.Services.AddBlazoredToast();
 builder.Services.AddBlazoredLocalStorage();
