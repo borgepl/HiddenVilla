@@ -188,6 +188,15 @@ else
         //{
         //    return;
         //}
+        try
+        {
+
+        }
+        catch (Exception ex)
+        {
+
+            ToastService.ShowError(ex.Message);
+        }
     }
 
     private bool HandleValidation()
