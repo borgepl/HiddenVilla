@@ -1,5 +1,9 @@
 ﻿using HiddenVilla_Client.Services.Contracts;
+using Models;
 using Models.Dto.Order;
+using Newtonsoft.Json;
+using System.Reflection;
+using System.Text;
 
 namespace HiddenVilla_Client.Services
 {
@@ -17,9 +21,24 @@ namespace HiddenVilla_Client.Services
             throw new NotImplementedException();
         }
 
-        public Task<RoomOrderDetailsDTO> SaveRoomOrderDetails(RoomOrderDetailsDTO details)
+        public async Task<RoomOrderDetailsDTO> SaveRoomOrderDetails(RoomOrderDetailsDTO details)
         {
-            throw new NotImplementedException();
+            var content = JsonConvert.SerializeObject(details);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/roomorder/create", bodyContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<RoomOrderDetailsDTO>(contentTemp);
+                return result;
+            }
+            else
+            {
+                var contentTemp = await response.Content.ReadAsStringAsync();
+                var errorModel = JsonConvert.DeserializeObject<ErrorModel>(contentTemp);
+                throw new Exception(errorModel.ErrorMessage);
+            }
         }
     }
 }
