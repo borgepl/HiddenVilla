@@ -12,9 +12,9 @@ namespace Models.Dto.Order
     {
         public int Id { get; set; }
         [Required]
-        public required string UserId { get; set; }
+        public string? UserId { get; set; }
         [Required]
-        public required string StripeSessionId { get; set; }
+        public string? StripeSessionId { get; set; }
         [Required]
         public DateTime CheckInDate { get; set; }
         [Required]
@@ -27,11 +27,11 @@ namespace Models.Dto.Order
         public int RoomId { get; set; }
         public bool IsPaymentSuccessful { get; set; } = false;
         [Required]
-        public required string Name { get; set; }
+        public string? Name { get; set; }
         [Required]
-        public required string Email { get; set; }
+        public string? Email { get; set; }
         public string? Phone { get; set; }
-        public required HotelRoomDTO HotelRoomDTO { get; set; }
+        public HotelRoomDTO? HotelRoomDTO { get; set; }
         public string? Status { get; set; }
     }
 }
