@@ -28,6 +28,7 @@ namespace HiddenVilla_Api.Extensions
             services.AddScoped<IHotelRoomRepository, HotelRoomRepository>();
             services.AddScoped<IHotelImagesRepository, HotelImagesRepository>();
             services.AddScoped<IAmenityRepository, AmenityRepository>();
+            services.AddScoped<IRoomOrderDetailsRepository, RoomOrderDetailsRepository>();
 
             services.AddCors(opt =>
             {

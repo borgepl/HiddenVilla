@@ -69,7 +69,7 @@ namespace Business.Repository
                 RoomOrderDetailsDTO roomOrderDetailsDTO = _mapper.Map<RoomOrderDetailsDTO>(roomOrder);
 
                 roomOrderDetailsDTO.HotelRoomDTO.TotalDays 
-                    = roomOrderDetailsDTO.CheckOutDate.Subtract(roomOrderDetailsDTO.CheckInDate).Days ;
+                    = roomOrderDetailsDTO.CheckOutDate.Subtract(roomOrderDetailsDTO.CheckInDate).Days;
 
                 return roomOrderDetailsDTO;
             }
@@ -80,9 +80,19 @@ namespace Business.Repository
             }
         }
 
-        public Task<bool> IsRoomBooked(int roomId, DateTime checkInDate, DateTime checkOutDate)
+        public async Task<bool> IsRoomBooked(int roomId, DateTime checkInDate, DateTime checkOutDate)
         {
-            throw new NotImplementedException();
+            var status = false;
+            var existingBooking = await _context.RoomOrderDetails.Where(x => x.RoomId == roomId && x.IsPaymentSuccessful &&
+                (checkInDate < x.CheckOutDate && checkInDate.Date > x.CheckInDate
+                ||
+                checkOutDate.Date > x.CheckInDate.Date && checkInDate.Date < x.CheckInDate.Date)).FirstOrDefaultAsync();
+
+            if (existingBooking != null)
+            {
+                status = true;
+            }
+            return status;
         }
 
         public Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(int roomOrderId)
