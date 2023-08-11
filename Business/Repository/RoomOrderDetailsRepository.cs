@@ -17,7 +17,7 @@ namespace Business.Repository
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public RoomOrderDetailsRepository(ApplicationDbContext context, IMapper mappe)
+        public RoomOrderDetailsRepository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -50,7 +50,7 @@ namespace Business.Repository
             try
             {
                 IEnumerable<RoomOrderDetails> roomOrders = await _context.RoomOrderDetails.Include(u=>u.HotelRoom).ToListAsync();
-                return _mapper.Map<IEnumerable<RoomOrderDetailsDTO>>(roomOrders)
+                return _mapper.Map<IEnumerable<RoomOrderDetailsDTO>>(roomOrders);
             }
             catch (Exception)
             {
