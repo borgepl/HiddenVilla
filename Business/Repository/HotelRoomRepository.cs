@@ -165,6 +165,16 @@ namespace Business.Repository
             {
                 IEnumerable<HotelRoom> hotelRooms = await _db.HotelRooms.Include(x => x.HotelRoomImages).ToListAsync();
                 IEnumerable<HotelRoomDTO> hotelRoomDTOs = _mapper.Map<IEnumerable<HotelRoomDTO>>(hotelRooms);
+
+                if (!string.IsNullOrEmpty(checkInDateStr) && !string.IsNullOrEmpty(checkOutDateStr))
+                {
+                    foreach (var hotelRoomDTO in hotelRoomDTOs)
+                    {
+                        hotelRoomDTO.IsBooked = await IsRoomBooked(hotelRoomDTO.Id, checkInDateStr, checkOutDateStr);
+                    }
+                   
+                }
+
                 return hotelRoomDTOs;
             }
             catch (Exception)
