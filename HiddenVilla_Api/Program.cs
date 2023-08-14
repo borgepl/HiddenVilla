@@ -19,6 +19,8 @@ builder.Services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOption
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseStripe(builder.Configuration);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerDocumentation();

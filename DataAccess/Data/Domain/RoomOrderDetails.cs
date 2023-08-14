@@ -12,9 +12,9 @@ namespace DataAccess.Data.Domain
     {
         public int Id { get; set; }
         [Required]
-        public required string UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
-        public required string StripeSessionId { get; set; }
+        public string StripeSessionId { get; set; }
         [Required]
         public DateTime CheckInDate { get; set; }
         [Required]

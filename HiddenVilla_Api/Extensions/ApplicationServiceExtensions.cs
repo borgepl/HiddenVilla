@@ -5,6 +5,7 @@ using DataAccess.Data;
 using HiddenVilla_Api.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Stripe;
 
 namespace HiddenVilla_Api.Extensions
 {
@@ -43,6 +44,13 @@ namespace HiddenVilla_Api.Extensions
             services.AddRouting(opt => opt.LowercaseUrls=true);
 
             return services;
+        }
+
+        public static IApplicationBuilder UseStripe(this IApplicationBuilder app, IConfiguration config )
+        {
+            StripeConfiguration.ApiKey = config.GetSection("Stripe")["ApiKey"];
+
+            return app;
         }
 
     }

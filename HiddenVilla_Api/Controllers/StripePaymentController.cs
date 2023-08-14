@@ -36,7 +36,7 @@ namespace HiddenVilla_Api.Controllers
                         {
                             PriceData = new SessionLineItemPriceDataOptions
                             {
-                                UnitAmount = payment.Amount*100,
+                                UnitAmount = payment.Amount,
                                 Currency="eur",
                                 ProductData= new SessionLineItemPriceDataProductDataOptions
                                 {
