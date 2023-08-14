@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.Dto.Order;
+using Stripe.Checkout;
 
 namespace HiddenVilla_Api.Controllers
 {
@@ -32,6 +33,32 @@ namespace HiddenVilla_Api.Controllers
                     ErrorMessage = "Error while creating the details for the booking."
                 });
             };
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PaymentSuccessful([FromBody] RoomOrderDetailsDTO details)
+        {
+            var service = new SessionService();
+            var sessionDetails = service.Get(details.StripeSessionId);
+            if (sessionDetails.PaymentStatus == "paid")
+            {
+                var result = await _roomOrderDetailsRepository.MarkPaymentSuccessful(details.Id);
+                if (result == null)
+                {
+                    return BadRequest(new ErrorModel()
+                    {
+                        ErrorMessage = "Cannot mark payment as successful."
+                    });
+                }
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(new ErrorModel()
+                {
+                    ErrorMessage = "Cannot mark payment as successful."
+                });
+            }
         }
     }
 }
