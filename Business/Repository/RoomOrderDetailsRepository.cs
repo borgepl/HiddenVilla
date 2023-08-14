@@ -4,6 +4,7 @@ using Common;
 using DataAccess.Data;
 using DataAccess.Data.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using Models.Dto.Order;
 using System;
 using System.Collections.Generic;
@@ -95,9 +96,22 @@ namespace Business.Repository
             return status;
         }
 
-        public Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(int roomOrderId)
+        public async Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(int roomOrderId)
         {
-            throw new NotImplementedException();
+            var dataFromDb = await _context.RoomOrderDetails.Where(x=> x.Id == roomOrderId).FirstOrDefaultAsync();
+            if (dataFromDb == null)
+            {
+                return null;
+            }
+            if (!dataFromDb.IsPaymentSuccessful)
+            {
+                dataFromDb.IsPaymentSuccessful = true;
+                dataFromDb.Status = SD.Status_Booked;
+                var paymentSuccessful = _context.RoomOrderDetails.Update(dataFromDb);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<RoomOrderDetailsDTO>(paymentSuccessful.Entity);
+            }
+            return new RoomOrderDetailsDTO();
         }
 
         public Task<bool> UpdateOrderStatus(int roomOrderId, string status)

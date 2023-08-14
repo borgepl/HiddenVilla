@@ -47,7 +47,7 @@ namespace HiddenVilla_Api.Controllers
                 {
                     return BadRequest(new ErrorModel()
                     {
-                        ErrorMessage = "Cannot mark payment as successful."
+                        ErrorMessage = "Cannot mark payment as successful. - retrieve error order"
                     });
                 }
                 return Ok(result);
