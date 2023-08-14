@@ -16,7 +16,7 @@ namespace Business.Contracts
         public Task<RoomOrderDetailsDTO> GetRoomOrderDetail(int roomOrderId);
         public Task<IEnumerable<RoomOrderDetailsDTO>> GetAllRoomOrderDetail();
         public Task<bool> UpdateOrderStatus(int roomOrderId, string status);
-        public Task<bool> IsRoomBooked(int roomId, DateTime checkInDate, DateTime checkOutDate);
+        
 
     }
 }

@@ -81,20 +81,6 @@ namespace Business.Repository
             }
         }
 
-        public async Task<bool> IsRoomBooked(int roomId, DateTime checkInDate, DateTime checkOutDate)
-        {
-            var status = false;
-            var existingBooking = await _context.RoomOrderDetails.Where(x => x.RoomId == roomId && x.IsPaymentSuccessful &&
-                (checkInDate < x.CheckOutDate && checkInDate.Date > x.CheckInDate
-                ||
-                checkOutDate.Date > x.CheckInDate.Date && checkInDate.Date < x.CheckInDate.Date)).FirstOrDefaultAsync();
-
-            if (existingBooking != null)
-            {
-                status = true;
-            }
-            return status;
-        }
 
         public async Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(int roomOrderId)
         {

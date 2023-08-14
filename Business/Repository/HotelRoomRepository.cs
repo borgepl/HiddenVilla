@@ -31,6 +31,37 @@ namespace Business.Repository
             return _mapper.Map<HotelRoomDTO>(addedHotelRoom.Entity);
         }
 
+        public async Task<bool> IsRoomBooked(int roomId, string checkInDateStr, string checkOutDateStr)
+        {
+            try
+            {
+                if(!string.IsNullOrEmpty(checkOutDateStr) && !string.IsNullOrEmpty(checkInDateStr))
+                {
+                    DateTime checkInDate = DateTime.ParseExact(checkInDateStr, "dd/MM/yyyy", null);
+                    DateTime checkOutDate = DateTime.ParseExact(checkOutDateStr, "dd/MM/yyyy", null);
+
+                    var existingBooking = await _db.RoomOrderDetails.Where(x => x.RoomId == roomId && x.IsPaymentSuccessful &&
+                                        ((checkInDate < x.CheckOutDate && checkInDate.Date >= x.CheckInDate)
+                                                ||
+                                        (checkOutDate.Date > x.CheckInDate.Date && checkInDate.Date <= x.CheckInDate.Date)
+                                        )).FirstOrDefaultAsync();
+
+                    if (existingBooking != null)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
         public async Task<HotelRoomDTO> IsRoomUnique(string name, int roomId = 0)
         {
             try
@@ -149,7 +180,14 @@ namespace Business.Repository
             {
                 HotelRoom hotelRoom = await _db.HotelRooms.Include(x => x.HotelRoomImages).FirstOrDefaultAsync(x => x.Id == roomId);
 
+                if ( !string.IsNullOrEmpty(checkInDateStr) && !string.IsNullOrEmpty(checkOutDateStr) )
+                {
+                    HotelRoomDTO hotelRoomDTO = _mapper.Map<HotelRoomDTO>(hotelRoom);
+                    hotelRoomDTO.IsBooked = await IsRoomBooked(roomId, checkInDateStr, checkOutDateStr);
+                    return hotelRoomDTO;
+                }
                 return _mapper.Map<HotelRoomDTO>(hotelRoom);
+                
             }
             catch (Exception)
             {

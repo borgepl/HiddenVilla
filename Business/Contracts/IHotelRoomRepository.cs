@@ -15,6 +15,7 @@ namespace Business.Contracts
         public Task<HotelRoomDTO> GetByIdAndDates(int roomId, string checkInDate, string checkOutDate);
         public Task<IEnumerable<HotelRoomDTO>> GetAll();
         public Task<IEnumerable<HotelRoomDTO>> GetAll(string checkInDate, string checkOutDate);
+        public Task<bool> IsRoomBooked(int roomId, string checkInDate, string checkOutDate);
         public Task<HotelRoomDTO> IsRoomUnique(string name, int roomId=0);
         public Task<int> Delete(int roomId);
     }
