@@ -1,5 +1,7 @@
 ﻿@page "/registration"
 @using Models.Dto.Registration
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavManager
 
 <EditForm Model="UserForRegistration" OnValidSubmit="RegisterUser" class="pt-4">
     <DataAnnotationsValidator />
@@ -84,7 +86,20 @@
 
     private async Task RegisterUser()
     {
-
+        ShowRegistrationErrors = false;
+        IsProcessing = true;
+        var result = await AuthenticationService.RegisterUser(UserForRegistration);
+        if (result.IsRegisterationSuccessful )
+        {
+            IsProcessing = false;
+            NavManager.NavigateTo("/login");
+        }
+        else
+        {
+            IsProcessing = false;
+            Errors = result.Errors;
+            ShowRegistrationErrors = true;
+        }
     }
 
 }
