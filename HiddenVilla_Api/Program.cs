@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add our own services
 builder.Services.AddMyAppServices(builder.Configuration);
+//builder.Services.AddMyMailServices(builder.Configuration);
 builder.Services.AddMyIdentityServices(builder.Configuration);
 builder.Services.AddSwaggerDocumentation();
 

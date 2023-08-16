@@ -1,5 +1,6 @@
 ﻿using Business.Contracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.Dto.Order;
@@ -12,10 +13,12 @@ namespace HiddenVilla_Api.Controllers
     public class RoomOrderController : ControllerBase
     {
         private readonly IRoomOrderDetailsRepository _roomOrderDetailsRepository;
+        private readonly IEmailSender _emailSender;
 
-        public RoomOrderController(IRoomOrderDetailsRepository roomOrderDetailsRepository)
+        public RoomOrderController(IRoomOrderDetailsRepository roomOrderDetailsRepository, IEmailSender emailSender)
         {
             _roomOrderDetailsRepository = roomOrderDetailsRepository;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
@@ -50,6 +53,8 @@ namespace HiddenVilla_Api.Controllers
                         ErrorMessage = "Cannot mark payment as successful. - retrieve error order"
                     });
                 }
+                //await _emailSender.SendEmailAsync(details.Email, "Booking Confirmed - Hidden Villa",
+                //   "Your booking has been confirmed at Hidden Villa with order ID :" + details.Id);
                 return Ok(result);
             }
             else
