@@ -1,10 +1,14 @@
 ﻿@page "/hotel/room-details/{Id:int}"
+@using Microsoft.AspNetCore.Authorization;
+@using Models.Dto.Login
 @inject IToastService ToastService
 @inject ILocalStorageService localStorage
 @inject IHotelRoomService hotelRoomService
 @inject IStripePaymentService stripePaymentService
 @inject IRoomOrderDetailsService roomOrderDetailsService
 @inject IJSRuntime jsRuntime
+@*@attribute [Authorize(Roles = SD.Role_Customer)]*@
+@attribute [Authorize]
 
 @if (HotelBooking?.OrderDetails?.HotelRoomDTO?.HotelRoomImages == null)
 {
@@ -163,6 +167,14 @@ else
                     HotelBooking.OrderDetails.HotelRoomDTO.TotalAmount =
                          HotelBooking.OrderDetails.HotelRoomDTO.RegularRate;
                 }      
+            }
+            @if (await localStorage.GetItemAsync<UserDTO>(SD.Local_UserDetails) != null)
+            {
+                var userInfo = await localStorage.GetItemAsync<UserDTO>(SD.Local_UserDetails);
+                HotelBooking.OrderDetails.UserId = userInfo.Id;
+                HotelBooking.OrderDetails.Name = userInfo.Name;
+                HotelBooking.OrderDetails.Phone = userInfo.PhoneNo;
+                HotelBooking.OrderDetails.Email = userInfo.Email;
             }
         }
         catch (Exception ex)
