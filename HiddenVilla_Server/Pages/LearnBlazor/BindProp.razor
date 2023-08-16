@@ -1,5 +1,9 @@
 ﻿@page "/bindprop"
 @using Model
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage sessionStorage
+@inject ProtectedLocalStorage localStorage
+
 
 <PageTitle>Bind Prop</PageTitle>
 
@@ -58,7 +62,13 @@
 
 </div>
 
+<p>Counter Value from other Page (Session) : @CounterSession</p>
+<p>Counter Value from other Page (Local) : @CounterLocal</p>
+
 @code {
+
+    public int CounterLocal { get; set; }
+    public int CounterSession { get; set; }
 
     string SelectedRoomProp = "";
 
@@ -77,8 +87,14 @@
             }
         };
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        var resultLocal = await localStorage.GetAsync<int>("counterLocal");
+        CounterLocal = resultLocal.Success ? resultLocal.Value : 0;
+
+        var resultSession = await sessionStorage.GetAsync<int>("counterSession");
+        CounterSession = resultSession.Success ? resultSession.Value : 0;
+
         base.OnInitialized();
 
         RoomsList.Add(new BlazorRoom()
