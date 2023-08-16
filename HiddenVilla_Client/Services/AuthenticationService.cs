@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Common;
 using HiddenVilla_Client.Services.Contracts;
+using Microsoft.AspNetCore.Components.Authorization;
 using Models.Dto.Login;
 using Models.Dto.Registration;
 using Newtonsoft.Json;
@@ -13,11 +14,14 @@ namespace HiddenVilla_Client.Services
     {
         private readonly HttpClient _client;
         private readonly ILocalStorageService _localStorage;
+        private readonly AuthenticationStateProvider _authStateProvider;
 
-        public AuthenticationService(HttpClient client, ILocalStorageService localStorage)
+        public AuthenticationService(HttpClient client, ILocalStorageService localStorage, 
+                                        AuthenticationStateProvider authStateProvider)
         {
             _client = client;
             _localStorage = localStorage;
+            _authStateProvider = authStateProvider;
         }
 
         public async Task<AuthenticationResponseDTO> Login(AuthenticationDTO userForAuthentication)
@@ -32,6 +36,7 @@ namespace HiddenVilla_Client.Services
             {
                 await _localStorage.SetItemAsync(SD.Local_Token, result.Token);
                 await _localStorage.SetItemAsync(SD.Local_UserDetails, result.UserDTO);
+                ((AuthStateProvider)_authStateProvider).NotifyUserLoggedIn(result.Token);
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Token);
                 return new AuthenticationResponseDTO { IsAuthSuccessful = true };
             }
@@ -45,6 +50,7 @@ namespace HiddenVilla_Client.Services
         {
             await _localStorage.RemoveItemAsync(SD.Local_Token);
             await _localStorage.RemoveItemAsync(SD.Local_UserDetails);
+            ((AuthStateProvider)_authStateProvider).NotifyUserLoggedOut();
             _client.DefaultRequestHeaders.Authorization = null;
         }
 

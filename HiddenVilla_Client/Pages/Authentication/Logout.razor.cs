@@ -14,3 +14,4 @@ namespace HiddenVilla_Client.Pages.Authentication
             NavigationManager.NavigateTo("/");
         }
     }
+}
