@@ -5,9 +5,10 @@
                 <p>Please wait, we are authorizing the user.</p>
             </Authorizing>
             <NotAuthorized>
-                <div class="text-center">
+                @*<div class="text-center">
                     <h3 class="text-danger">Please Login in first!</h3>
-                </div>
+                </div>*@
+                <HiddenVilla_Client.Pages.Authentication.RedirectToLogin></HiddenVilla_Client.Pages.Authentication.RedirectToLogin>
             </NotAuthorized>
         </AuthorizeRouteView>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
