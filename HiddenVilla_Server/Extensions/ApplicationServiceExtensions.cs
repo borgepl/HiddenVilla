@@ -24,6 +24,7 @@ namespace HiddenVilla_Server.Extensions
             services.AddScoped<IHotelRoomRepository, HotelRoomRepository>();
             services.AddScoped<IHotelImagesRepository, HotelImagesRepository>();
             services.AddScoped<IAmenityRepository, AmenityRepository>();
+            services.AddScoped<IRoomOrderDetailsRepository, RoomOrderDetailsRepository>();
 
             services.AddScoped<IDBInitializer, DBInitializer>();
 
