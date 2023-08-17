@@ -72,6 +72,8 @@ namespace Business.Repository
                 roomOrderDetailsDTO.HotelRoomDTO.TotalDays 
                     = roomOrderDetailsDTO.CheckOutDate.Subtract(roomOrderDetailsDTO.CheckInDate).Days;
 
+
+
                 return roomOrderDetailsDTO;
             }
             catch (Exception)
@@ -104,7 +106,7 @@ namespace Business.Repository
         {
             try
             {
-                var roomOrder = await _context.RoomOrderDetails.FirstOrDefaultAsync(u => u.Id == RoomOrderId);
+                var roomOrder = await _context.RoomOrderDetails.FirstOrDefaultAsync(u => u.Id == roomOrderId);
                 if (roomOrder == null)
                 {
                     return false;
